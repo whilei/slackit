@@ -56,11 +56,6 @@ module.exports = (robot) ->
     console.log("Push comment limit", pushCommentLimit)
     console.log("Repo local path", repoLocalPath)
 
-    robot.enter (res) ->
-        res.send "I'm here"
-    robot.leave (res) ->
-        res.send "I'm gone"
-
     # Likes explosions.
     robot.hear /.*/g, (res) ->
         console.log("got message #{res.message.text}")
