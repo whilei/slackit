@@ -1,0 +1,14 @@
+{
+  "name": "ginger",
+  "version": "0.0.0",
+  "private": true,
+  "author": "Mr. Is <isaac.ardis@gmail.com>",
+  "description": "Git-going robot",
+  "dependencies": {
+    "hubot": "^2.18.0",
+    "hubot-help": "^0.1.3"
+  },
+  "engines": {
+    "node": "0.10.x"
+  }
+}
