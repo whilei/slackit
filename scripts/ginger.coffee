@@ -1,8 +1,10 @@
 # Description
-#   Overhears things and tells you how he feels.
+#   Silently listens and records all conversations she's invited to a git repo,
+#   and pushes commits to Github repo on the reg.
 #
 # Configuration:
-#   LIST_OF_ENV_VARS_TO_SET
+#   GINGER_COMMENT_LIMIT
+#   GINGER_REPO_PATH
 #
 # Commands:
 #   <ginger push> - Commits and pushes to remote
