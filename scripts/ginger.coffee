@@ -5,14 +5,7 @@
 #   LIST_OF_ENV_VARS_TO_SET
 #
 # Commands:
-#   <(to|on|for) production> - feelings on launching things
-#   <(to|on|for) staging> - feelings on staging things
-#   <(to|on|for) staging> - feelings on staging things
-#   <government|gov|legal|law|laws> - feelings on government
-#   <robot|bot|bastard|computer|wires|tubes> - feelings on robots
-#   <update|updates|updated|date> - feelings on dates
-#   <meeting|meetings> - feelings on meetings
-#   <drink(|s)|beverage(|s)|bev(y|ies)|beer|shot(|s)|whiskey> - feelings on drinks
+#   <ginger push> - Commits and pushes to remote
 #
 # Notes:
 #   <optional notes required for the script>
@@ -21,17 +14,22 @@
 #   Mr. Is <isaac.ardis@gmail.com>
 
 fs = require('fs')
-
 repoLocalPath = './ginger-testland/'
 git = require('simple-git')(repoLocalPath)
 
 pushCommentLimit = 10
-pushTimeLimit = 0
-
 commentCount = 0
 
+setupUserEnvs = () ->
+    userDefinedRepo = process.env.GINGER_REPO_PATH
+    if (userDefinedRepo !== '')
+        repoLocalPath = userDefinedRepo
+
+    if (process.env.GINGER_COMMENT_LIMIT !== '')
+        pushCommentLimit = Number(process.env.GINGER_COMMENT_LIMIT)
+
 addCommitAndPush = () ->
-    return git.add('./*').commit("Ginger saved").push('origin')
+    return git.add('./*').commit("Ginger saved").push(repoRemoteName)
 
 formatMessage = (res) ->
     d = new Date(res.message.rawMessage.ts * 1000).toISOString()
@@ -43,12 +41,13 @@ existsOrCreate = (path) ->
             fs.mkdirSync(repoLocalPath)
     )
     # Check if file exists, create if not
-    fs.open(path, 'rs+', (err, fd) ->
+    return fs.open(path, 'rs+', (err, fd) ->
         if (err)
             console.error(err)
             return false
+        else
+            return true
     )
-    return true
 
 saveMessage = (res) ->
     p = repoLocalPath + res.message.rawMessage.channel.name
@@ -56,6 +55,7 @@ saveMessage = (res) ->
         fs.appendFileSync(p, formatMessage(res))
 
 module.exports = (robot) ->
+    setupUserEnvs()
 
     robot.enter (res) ->
         res.send "I'm here"

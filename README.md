@@ -5,3 +5,7 @@ adds, commits, and pushes to update the remote once in a while.
 
 See https://github.com/whilei/ginger-testland for example of repo she
 maintains.
+
+```
+HUBOT_SLACK_TOKEN=$HUBOT_SLACK_TOKEN_GINGER ./bin/hubot --adapter slack
+```
