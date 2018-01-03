@@ -21,7 +21,7 @@ join = require('path').join
 repoLocalPath = './ginger-testland/'
 git = require('simple-git')(repoLocalPath)
 
-pushCommentLimit = 10
+pushCommentLimit = 100
 commentCount = 0
 
 addCommitAndPush = () ->
@@ -58,7 +58,6 @@ module.exports = (robot) ->
     console.log("Push comment limit", pushCommentLimit)
     console.log("Repo local path", repoLocalPath)
 
-    # Likes explosions.
     robot.hear /.*/g, (res) ->
         console.log("got message #{res.message.text}")
         saveMessage(res)
