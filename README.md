@@ -1,21 +1,22 @@
-# Ginger
+# Slackit
+> Slack + Git
 
 Archives all slack messages for channels she's in to a git repository, and
 adds, commits, and pushes to update the remote once in a while.
 
-See https://github.com/whilei/ginger-testland for example of repo she
+See https://github.com/whilei/slackit-testland for example of repo she
 maintains.
 
 ```
-HUBOT_SLACK_TOKEN=$HUBOT_SLACK_TOKEN_GINGER ./bin/hubot --adapter slack
+HUBOT_SLACK_TOKEN=$HUBOT_SLACK_TOKEN_SLACKIT ./bin/hubot --adapter slack
 ```
 
 Possible __ENV_VARS__:
-- `GINGER_REPO_PATH`=`/path/to/archive`  This will be automatically made absolute.
-- `GINGER_COMMENT_LIMIT`=42  The number of comments to tally before committing and pushing to the remote.
+- `SLACKIT_REPO_PATH`=`/path/to/archive`  This will be automatically made absolute.
+- `SLACKIT_COMMENT_LIMIT`=42  The number of comments to tally before committing and pushing to the remote.
 
 Possible __commands__:
-- `ginger push`  If she hears that, she'll `git add . && git commit -m "Ginger update" && git push origin master`, then
+- `slackit push`  If she hears that, she'll `git add . && git commit -m "slackit update" && git push origin master`, then
 reset the comment limit counter.
 
 Her __limitations__:

@@ -3,11 +3,11 @@
 #   and pushes commits to Github repo on the reg.
 #
 # Configuration:
-#   GINGER_COMMENT_LIMIT
-#   GINGER_REPO_PATH
+#   SLACKIT_COMMENT_LIMIT
+#   SLACKIT_REPO_PATH
 #
 # Commands:
-#   <ginger push> - Commits and pushes to remote
+#   <slackit push> - Commits and pushes to remote
 #
 # Notes:
 #   <optional notes required for the script>
@@ -18,17 +18,17 @@
 fs = require('fs')
 resolve = require('path').resolve
 join = require('path').join
-repoLocalPath = './ginger-testland/'
+repoLocalPath = './slackit-testland/'
 git = require('simple-git')(repoLocalPath)
 
 pushCommentLimit = 100
 commentCount = 0
 
 addCommitAndPush = (user, isHuman) ->
-    # If ginger is automatically updating, use her given robot name.
+    # If slackit is automatically updating, use her given robot name.
     if (!isHuman)
         return git.add('./*').commit("#{user} update").push('origin')
-        # Otherwise add user who sent message as author to commit with Ginger/robot-name.
+        # Otherwise add user who sent message as author to commit with slackit/robot-name.
     return git.add('./*').commit("update", {'--author': '"' + user + '"'}).push('origin')
 
 formatMessage = (res) ->
@@ -54,15 +54,15 @@ saveMessage = (res) ->
 
 module.exports = (robot) ->
 
-    pushCommentLimit = process.env.GINGER_COMMENT_LIMIT || pushCommentLimit
+    pushCommentLimit = process.env.SLACKIT_COMMENT_LIMIT || pushCommentLimit
     pushCommentLimit = Number(pushCommentLimit)
-    repoLocalPath = process.env.GINGER_REPO_PATH || repoLocalPath
+    repoLocalPath = process.env.SLACKIT_REPO_PATH || repoLocalPath
     repoLocalPath = resolve(repoLocalPath)
 
     console.log("Push comment limit", pushCommentLimit)
     console.log("Repo local path", repoLocalPath)
 
-    git.addConfig("user.name", "Ginger").addConfig("user.email", "job@etcdevteam.com")
+    git.addConfig("user.name", "slackit").addConfig("user.email", "job@etcdevteam.com")
 
     robot.hear /.*/g, (res) ->
         console.log("got message #{res.message.text}")
@@ -71,7 +71,7 @@ module.exports = (robot) ->
         if (commentCount > pushCommentLimit)
             addCommitAndPush(robot.name, false).then(() -> commentCount = 0)
 
-    robot.hear /^ginger push$/g, (res) ->
+    robot.hear /^slackit push$/g, (res) ->
             addCommitAndPush(res.message.user.name+' '+'<'+res.message.user.profile.email+'>', true).then(() ->
                 commentCount = 0
                 res.send "pushed"
