@@ -24,8 +24,12 @@ git = require('simple-git')(repoLocalPath)
 pushCommentLimit = 100
 commentCount = 0
 
-addCommitAndPush = () ->
-    return git.add('./*').commit("Ginger saved").push('origin')
+addCommitAndPush = (user, isHuman) ->
+    # If ginger is automatically updating, use her given robot name.
+    if (!isHuman)
+        return git.add('./*').commit("#{user} update").push('origin')
+        # Otherwise add user who sent message as author to commit with Ginger/robot-name.
+    return git.add('./*').commit("update", {'--author': '"' + user + '"'}).push('origin')
 
 formatMessage = (res) ->
     d = new Date(res.message.rawMessage.ts * 1000).toISOString()
@@ -58,15 +62,17 @@ module.exports = (robot) ->
     console.log("Push comment limit", pushCommentLimit)
     console.log("Repo local path", repoLocalPath)
 
+    git.addConfig("user.name", "Ginger").addConfig("user.email", "job@etcdevteam.com")
+
     robot.hear /.*/g, (res) ->
         console.log("got message #{res.message.text}")
         saveMessage(res)
         commentCount++
         if (commentCount > pushCommentLimit)
-            addCommitAndPush().then(() -> commentCount = 0)
+            addCommitAndPush(robot.name, false).then(() -> commentCount = 0)
 
-    robot.hear /^ginger push/g, (res) ->
-            addCommitAndPush().then(() ->
+    robot.hear /^ginger push$/g, (res) ->
+            addCommitAndPush(res.message.user.name+' '+'<'+res.message.user.profile.email+'>', true).then(() ->
                 commentCount = 0
                 res.send "pushed"
                 )
